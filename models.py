@@ -27,13 +27,12 @@ class Tasks(Base):
     complete = Column(Boolean, default=False)
     created_on = Column(DateTime, default=datetime.now(timezone.utc))
 
-class Salary(Base):
-    __tablename__ = "Salary"
+class Salaries(Base):
+    __tablename__ = "salaries"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String)
-    author = Column(Integer, ForeignKey("users.id"))
-    description = Column(String)
-    priority = Column(Integer)
-    complete = Column(Boolean, default=False)
-    created_on = Column(DateTime, default=datetime.now(timezone.utc))
+    amount = Column(Integer)
+    received_by = Column(Integer, ForeignKey("users.id"))
+    details = Column(String)
+    is_approved = Column(Boolean, default=False)
+    date_received = Column(DateTime, default=datetime.now(timezone.utc))
