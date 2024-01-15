@@ -43,15 +43,15 @@ async def create_task(task_data: Task, db: Session = Depends(get_db), current_us
 
 
 @router.get("/{task_id}", status_code=status.HTTP_200_OK)
-async def get_task_by_id(task_id: int = Path(gt=0), db: Session = Depends(get_db)):
-    task = db.query(Tasks).filter(Tasks.id == task_id).first()
+async def get_task_by_id(task_id: int = Path(gt=0), db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
+    task = db.query(Tasks).filter(Tasks.id == task_id).filter(Tasks.id == current_user.get("id")).first()
     if task is not None:
         return task
     raise HTTPException(status_code=404, detail=f"Task with id #{task_id} was not found")
 
 
 @router.put("/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def update_task_by_id(task_data: Task, task_id: int = Path(gt=0), db: Session = Depends(get_db)):
+async def update_task_by_id(task_data: Task, task_id: int = Path(gt=0), db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
     task = db.query(Tasks).filter(Tasks.id == task_id).first()
 
     if task is None:
@@ -68,7 +68,7 @@ async def update_task_by_id(task_data: Task, task_id: int = Path(gt=0), db: Sess
 
 
 @router.delete("/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_task_by_id(task_id: int = Path(gt=0), db: Session = Depends(get_db)):
+async def delete_task_by_id(task_id: int = Path(gt=0), db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
     delete_task = db.query(Tasks).filter(Tasks.id == task_id).first()
 
     if delete_task is None:

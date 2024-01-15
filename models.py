@@ -26,3 +26,14 @@ class Tasks(Base):
     priority = Column(Integer)
     complete = Column(Boolean, default=False)
     created_on = Column(DateTime, default=datetime.now(timezone.utc))
+
+class Salary(Base):
+    __tablename__ = "Salary"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String)
+    author = Column(Integer, ForeignKey("users.id"))
+    description = Column(String)
+    priority = Column(Integer)
+    complete = Column(Boolean, default=False)
+    created_on = Column(DateTime, default=datetime.now(timezone.utc))
